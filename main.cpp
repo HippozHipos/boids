@@ -297,6 +297,7 @@ private:
 						vecToBoidInRange *= (1.0f / distance);
 					totalInfluence += vecToBoidInRange;
 				}
+
 				arrow->rotationAngle += std::atan2(totalInfluence.y, totalInfluence.x) * rotationMobility;
 			}
 
@@ -316,6 +317,7 @@ private:
 						localAveragePosition /= count;
 					olc::vf2d directionTolocalAveragePosition = (arrow->position - localAveragePosition).norm();
 					float angle = std::atan2(directionTolocalAveragePosition.y, directionTolocalAveragePosition.x);
+					angle = wrap(angle, 2 * PI);
 					angle < arrow->rotationAngle ? arrow->rotationAngle -= angle * rotationMobility
 						: arrow->rotationAngle += angle * rotationMobility;
 
@@ -333,6 +335,9 @@ private:
 				}
 				if (count != 0)
 					averageAngle /= count;
+
+				averageAngle = wrap(averageAngle, 2 * PI);
+
 				averageAngle < arrow->rotationAngle ? arrow->rotationAngle -= averageAngle * rotationMobility
 					: arrow->rotationAngle += averageAngle * rotationMobility;
 			}
